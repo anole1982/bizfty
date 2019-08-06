@@ -1,6 +1,7 @@
 package com.bizfty.service.container.editor.resources;
 
 import com.bizfty.service.container.editor.services.ServiceMgmtService;
+import org.springframework.beans.factory.annotation.Value;
 import org.springframework.stereotype.Component;
 import io.swagger.v3.oas.annotations.Operation;
 import io.swagger.v3.oas.annotations.Parameter;
@@ -24,8 +25,12 @@ import javax.xml.bind.annotation.XmlRootElement;
 @Path("/service")
 @Tag(name = "/service", description = "服务管理接口")
 public class ServiceResource {
+
     @Resource
     private ServiceMgmtService service;
+
+    @Value("${mykey.name}")
+    private String name;
 
     @GET
     @Produces(MediaType.APPLICATION_JSON)
@@ -37,5 +42,12 @@ public class ServiceResource {
             })
     public  String getService() {
         return service.getServiceName();
+    }
+
+    @GET
+    @Produces(MediaType.TEXT_PLAIN)
+    @Path("/name")
+    public String getName(){
+        return this.name;
     }
 }

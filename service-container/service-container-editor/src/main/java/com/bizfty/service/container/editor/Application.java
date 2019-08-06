@@ -8,11 +8,17 @@ import org.springframework.web.filter.CharacterEncodingFilter;
 import org.eclipse.jetty.servlets.CrossOriginFilter;
 
 import java.util.Arrays;
-import java.util.EnumSet;
+import org.springframework.beans.factory.annotation.Autowired;
+import org.springframework.cloud.client.discovery.DiscoveryClient;
+import org.springframework.cloud.client.discovery.EnableDiscoveryClient;
 
 @SpringBootApplication
+@EnableDiscoveryClient
 public class Application {
 
+    @Autowired
+    private DiscoveryClient discoveryClient;
+    
     public static void main(String[] args) {
         SpringApplication.run(Application.class, args);
     }
@@ -26,6 +32,7 @@ public class Application {
         registrationBean.setFilter(characterEncodingFilter);
         return registrationBean;
     }
+
     @Bean
     public FilterRegistrationBean crossOrigin() {
         FilterRegistrationBean registrationBean = new FilterRegistrationBean();
@@ -39,4 +46,6 @@ public class Application {
         registrationBean.addInitParameter(CrossOriginFilter.ALLOW_CREDENTIALS_PARAM, "true");
         return registrationBean;
     }
+
+
 }

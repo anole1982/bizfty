@@ -36,6 +36,21 @@
         </dependency>
         <dependency>
             <groupId>org.springframework.boot</groupId>
+            <artifactId>spring-boot-starter-actuator</artifactId>
+            <version>2.1.6.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.cloud</groupId>
+            <artifactId>spring-cloud-starter-consul-discovery</artifactId>
+            <version>2.1.2.RELEASE</version>
+        </dependency>
+        <dependency> 
+            <groupId>org.springframework.cloud</groupId> 
+            <artifactId>spring-cloud-starter-consul-config</artifactId>
+            <version>2.1.2.RELEASE</version>
+        </dependency>
+        <dependency>
+            <groupId>org.springframework.boot</groupId>
             <artifactId>spring-boot-starter-jersey</artifactId>
             <version>2.1.6.RELEASE</version>
         </dependency>
@@ -60,14 +75,14 @@
 
     <build>
         <plugins>
-                <plugin>
-                    <groupId>org.springframework.boot</groupId>
-                    <artifactId>spring-boot-maven-plugin</artifactId>
-                    <configuration>
-                        <fork>true</fork>
-                        <mainClass>com.bizfty.service.container.editor.Application</mainClass>
-                    </configuration>
-                </plugin>
-            </plugins>
+            <plugin>
+                <groupId>org.springframework.boot</groupId>
+                <artifactId>spring-boot-maven-plugin</artifactId>
+                <configuration>
+                    <fork>true</fork>
+                    <mainClass>com.bizfty.service.container.editor.Application</mainClass>
+                </configuration>
+            </plugin>
+        </plugins>
     </build>
 </project>

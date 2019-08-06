@@ -1,0 +1,28 @@
+server:
+  port: 8324
+spring:
+  profiles:
+    active: dev
+  application:
+    name: editor
+    instance_id: editor:${random.value}
+  cloud:
+    consul:
+      host: 192.168.201.55
+      port: 8531
+      discovery:
+        health-check-path: http://192.168.50.7:8324/actuator/health   # 健康健康路径，也可以自己写 #health-check-path: ${server.servlet.context-path}/actuator/health
+        health-check-interval:  10s  # 检测轮训时间 1m 代码1分钟
+        instance-id: ${spring.application.name}:${spring.application.instance_id}:${random.value}
+        service-name: service-${spring.application.name}
+        health-check-headers:
+          X-Config-Token: 6442e58b-d1ea-182e-cfa5-cf9cddef0722
+      config:
+        enabled: true #false禁用Consul配置，默认true
+        format: YAML    # 表示consul上面文件的格式 有四种 YAML PROPERTIES KEY-VALUE FILES
+        data-key: configuration    #表示consul上面的KEY值(或者说文件的名字) 默认是data
+        prefix: config #设置配置值的基本文件夹
+        defaultContext: ${spring.application.name} #设置所有应用程序使用的文件夹名称
+        profileSeparator: ',' #设置用于使用配置文件在属性源中分隔配置文件名称的分隔符的值
+        watch:
+          enabled: true
