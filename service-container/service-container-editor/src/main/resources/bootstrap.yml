@@ -4,16 +4,23 @@ spring:
   profiles:
     active: dev
   application:
-    name: editor
-    instance_id: editor:${random.value}
+    name: editor-producer
+    instance_id: ${spring.application.name}-${random.value}
   cloud:
+    inetutils:
+      default-ip-address: 192.168.50.4
+      ignored-interfaces: [wlan]
+      preferred-networks: [192.168.50.4]
+    client:
+      ip-address: 192.168.50.4
     consul:
       host: 192.168.201.55
       port: 8531
       discovery:
-        health-check-path: http://192.168.50.7:8324/actuator/health   # 健康健康路径，也可以自己写 #health-check-path: ${server.servlet.context-path}/actuator/health
+        prefer-ip-address: true
+        health-check-path: /actuator/health   # 健康健康路径，也可以自己写 #health-check-path: ${server.servlet.context-path}/actuator/health
         health-check-interval:  10s  # 检测轮训时间 1m 代码1分钟
-        instance-id: ${spring.application.name}:${spring.application.instance_id}:${random.value}
+        instance-id: ${spring.application.instance_id}
         service-name: service-${spring.application.name}
         health-check-headers:
           X-Config-Token: 6442e58b-d1ea-182e-cfa5-cf9cddef0722
