@@ -1,0 +1,12 @@
+editor-service:
+  ribbon:
+    read-timeout: 3000
+    connect-timeout: 3000
+    server-list-refresh-interval: 2000
+    max-auto-retries: 1
+    max-auto-retries-next-server: 1
+#    NFLoadBalancerRuleClassName: com.netflix.loadbalancer.ZoneAvoidanceRule
+#    NIWSServerListClassName: com.netflix.loadbalancer.ConfigurationBasedServerList
+#    list-of-servers: 192.168.124.13:8500
+#  rpc:
+#    url: localhost:8324/rests
