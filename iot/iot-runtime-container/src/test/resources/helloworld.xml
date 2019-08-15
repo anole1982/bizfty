@@ -1,0 +1,28 @@
+<?xml version="1.0" encoding="UTF-8"?>
+<beans xmlns="http://www.springframework.org/schema/beans"
+       xmlns:xsi="http://www.w3.org/2001/XMLSchema-instance"
+       xmlns:int="http://www.springframework.org/schema/integration"
+       xmlns:int-http="http://www.springframework.org/schema/integration/http"
+       xsi:schemaLocation="
+        http://www.springframework.org/schema/beans
+        https://www.springframework.org/schema/beans/spring-beans.xsd
+		http://www.springframework.org/schema/integration
+		https://www.springframework.org/schema/integration/spring-integration.xsd
+		http://www.springframework.org/schema/integration/http
+		https://www.springframework.org/schema/integration/http/spring-integration-http.xsd">
+    <int:channel id="helloRequestChannel"/>
+    <int:channel id="helloResponseChannel"/>
+    <int:channel id="helloExceptionChannel"/>
+    <int-http:inbound-gateway request-channel="helloRequestChannel"
+                              reply-channel="helloResponseChannel"
+                              supported-methods="POST"
+                              path="/hello/{user}">
+        <int-http:request-mapping consumes="*/*" produces="application/json"/>
+        <int-http:header name="source" expression="#pathVariables.user"/>
+    </int-http:inbound-gateway>
+
+    <!--<int-http:outbound-gateway request-channel="requestChannel"-->
+                               <!--url="http://localhost:8080/http/receiveGateway"-->
+                               <!--http-method="POST"-->
+                               <!--expected-response-type="java.lang.String"/>-->
+</beans>

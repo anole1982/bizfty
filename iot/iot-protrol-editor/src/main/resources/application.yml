@@ -1,0 +1,21 @@
+netty:
+    ssl: false
+    jks-file: D:/workspace/xxx.file
+    jks-store-password: 12351235
+    jks-certificate-password: 123125
+    heart: 2000
+    tcp: 
+        port: 3222
+        nodelay: true
+    boss:  #bossGroup的线程数
+        thread:
+            count: 2
+    worker:
+        thread:
+            count: 2
+    so: 
+         keepalive:  true
+         reuseaddr: true
+         revbuf: 2000
+         sndbuf: 2000
+         backlog: 100
