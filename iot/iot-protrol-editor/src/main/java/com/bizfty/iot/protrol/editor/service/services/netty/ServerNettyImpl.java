@@ -1,5 +1,10 @@
 package com.bizfty.iot.protrol.editor.service.services.netty;
 
+import com.bizfty.iot.protrol.editor.service.protrol.caimore.RegisterMessageDecoder;
+import com.bizfty.iot.protrol.editor.service.protrol.caimore.RegisterMessageHandler;
+import com.bizfty.iot.protrol.editor.service.protrol.message.FFDecoder;
+import com.bizfty.iot.protrol.editor.service.protrol.message.FFEncoder;
+import com.bizfty.iot.protrol.editor.service.protrol.message.FFMessageHander;
 import com.bizfty.iot.protrol.editor.service.services.Server;
 import io.netty.bootstrap.ServerBootstrap;
 import io.netty.buffer.PooledByteBufAllocator;
@@ -14,6 +19,7 @@ import io.netty.channel.epoll.EpollServerSocketChannel;
 import io.netty.channel.nio.NioEventLoopGroup;
 import io.netty.channel.socket.SocketChannel;
 import io.netty.channel.socket.nio.NioServerSocketChannel;
+import io.netty.handler.logging.LoggingHandler;
 import io.netty.handler.ssl.SslHandler;
 import io.netty.handler.timeout.IdleStateHandler;
 import io.netty.util.internal.SystemPropertyUtil;
@@ -22,9 +28,12 @@ import java.util.concurrent.ExecutorService;
 import java.util.concurrent.Executors;
 import java.util.concurrent.ThreadFactory;
 import java.util.concurrent.atomic.AtomicInteger;
+import javax.inject.Provider;
 import javax.net.ssl.KeyManagerFactory;
 import javax.net.ssl.SSLContext;
 import javax.net.ssl.SSLEngine;
+
+import io.netty.util.internal.logging.InternalLogLevel;
 import org.apache.commons.lang3.ObjectUtils;
 import org.slf4j.Logger;
 import org.slf4j.LoggerFactory;
@@ -43,6 +52,7 @@ public class ServerNettyImpl implements Server {
     private NettyConfig config;
     @Autowired
     private InetUtilsProperties inetUtilsProperties;
+
     private EventLoopGroup bossGroup;
     private EventLoopGroup workGroup;
     private ServerBootstrap bootstrap = null;// 启动辅助类
@@ -99,12 +109,14 @@ public class ServerNettyImpl implements Server {
         }
 
         intProtocolHandler(channelPipeline);
-        channelPipeline.addLast(new IdleStateHandler(config.getHeart(), 0, 0));
-        channelPipeline.addLast(  SpringBeanUtils.getBean(comfig.getMqttHander()));
+
     }
 
     private void intProtocolHandler(ChannelPipeline channelPipeline) {
-
+        channelPipeline.addLast(new IdleStateHandler(config.getHeart(), 0, 0));
+        channelPipeline.addLast("logging", new LoggingHandler());
+        channelPipeline.addLast("regdecoder", registerMessageDecoder());
+        channelPipeline.addLast("reghanler", registerMessageHandler());
     }
 
     protected void initSsl() {
@@ -170,5 +182,18 @@ public class ServerNettyImpl implements Server {
 
     private boolean useEpoll() {
         return Epoll.isAvailable();
+    }
+
+    @Autowired
+    private Provider<RegisterMessageDecoder> registerMessageDecoderProvider;
+    @Autowired
+    private Provider<RegisterMessageHandler> registerMessageHandlerProvider;
+
+    private RegisterMessageDecoder registerMessageDecoder(){
+        return registerMessageDecoderProvider.get();
+    }
+
+    private RegisterMessageHandler registerMessageHandler(){
+        return registerMessageHandlerProvider.get();
     }
 }

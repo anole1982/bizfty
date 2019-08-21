@@ -1,6 +1,7 @@
 package com.bizfty.iot.protrol.editor.service;
 
 import com.bizfty.iot.protrol.editor.service.resources.ServerResourceImpl;
+import com.bizfty.iot.protrol.editor.service.resources.ClientsResourceImpl;
 import javax.ws.rs.ApplicationPath;
 
 import io.swagger.v3.jaxrs2.integration.resources.OpenApiResource;
@@ -18,6 +19,7 @@ import org.springframework.context.annotation.Configuration;
 public class JerseyConfig extends ResourceConfig {
 
     public JerseyConfig() {
+        register(ClientsResourceImpl.class);
         register(ServerResourceImpl.class);
         register(JacksonFeature.class);
         Set<Class<?>> resources = new HashSet<>();
