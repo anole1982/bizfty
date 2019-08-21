@@ -1,5 +1,6 @@
 package com.bizfty.iot.protrol.editor.service.services.netty;
 
+import com.bizfty.iot.protrol.editor.service.protrol.caimore.HeartMessageHandler;
 import com.bizfty.iot.protrol.editor.service.protrol.caimore.RegisterMessageDecoder;
 import com.bizfty.iot.protrol.editor.service.protrol.caimore.RegisterMessageHandler;
 import com.bizfty.iot.protrol.editor.service.protrol.message.FFDecoder;
@@ -115,6 +116,7 @@ public class ServerNettyImpl implements Server {
     private void intProtocolHandler(ChannelPipeline channelPipeline) {
         channelPipeline.addLast(new IdleStateHandler(config.getHeart(), 0, 0));
         channelPipeline.addLast("logging", new LoggingHandler());
+//        channelPipeline.addLast("heart",new HeartMessageHandler());
         channelPipeline.addLast("regdecoder", registerMessageDecoder());
         channelPipeline.addLast("reghanler", registerMessageHandler());
     }

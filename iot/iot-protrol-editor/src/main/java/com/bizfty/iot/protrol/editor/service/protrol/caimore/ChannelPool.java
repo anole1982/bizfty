@@ -24,6 +24,7 @@ public class ChannelPool {
 
     public void registration(Channel channel,RegisterMessage message) throws Exception {
         pool.put(channel,message);
+        logger.debug("注册："+message);
     }
     public void cancellation(Channel channel){
         try {
